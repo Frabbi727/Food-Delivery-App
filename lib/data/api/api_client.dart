@@ -17,7 +17,7 @@ class ApiClient extends GetConnect implements GetxService {
   }
 // Hit the uri which means end point  and get the data
   Future<Response> getData(String uri) async {
-    print('Api client getData class');
+   // print('Api client getData class');
     try {
       Response response = await get(uri);
       return response;

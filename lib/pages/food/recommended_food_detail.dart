@@ -103,7 +103,7 @@ class RecommendedFoodDetail extends StatelessWidget {
                   iconSize: HelperClass.height20,
                 ),
                 BigText(
-                  text: '\$ ${product.price??''} X 0 ',
+                  text: '\$ ${product.price??'0'} X 0 ',
                   color: AppColors.mainBlackColor,
                   size: HelperClass.textSize20,
                 ),

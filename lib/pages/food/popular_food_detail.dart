@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/controllers/cart_controller.dart';
 import 'package:food_delivery_app/controllers/popular_product_controller.dart';
 import 'package:food_delivery_app/pages/home/main_food_page.dart';
 import 'package:food_delivery_app/utils/colors.dart';
@@ -23,10 +24,10 @@ class PopularFoodDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     var product =
         Get.find<PopularProductController>().popularProductList[pageId ?? 0];
-    print(pageId);
+    Get.find<PopularProductController>()
+        .initProduct(Get.find<CartController>());
+    print('Page id ${pageId}');
     print('Product List Value:: ${product.name}');
-    //print('Product Name ${product.name}');
-// print('Page Number $pageId');
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -148,7 +149,7 @@ class PopularFoodDetail extends StatelessWidget {
                     SizedBox(
                       width: HelperClass.width5,
                     ),
-                    BigText(text: popularProduct.quantity.toString()),
+                    BigText(text: popularProduct.quantity.toString() ?? 'N/A'),
                     SizedBox(
                       width: HelperClass.width5,
                     ),
@@ -172,9 +173,14 @@ class PopularFoodDetail extends StatelessWidget {
                   color: AppColors.mainColor,
                   borderRadius: BorderRadius.circular(HelperClass.radius20),
                 ),
-                child: BigText(
-                    text: '\$ ${product.price ?? ''} | Added to Cart ',
-                    color: Colors.white),
+                child: InkWell(
+                  onTap: () {
+                    popularProduct.addItem(product);
+                  },
+                  child: BigText(
+                      text: '\$ ${product.price ?? ''} | Added to Cart ',
+                      color: Colors.white),
+                ),
               ),
             ],
           ),
