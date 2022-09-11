@@ -17,10 +17,14 @@ class RecommendedProductController extends GetxController {
     Response response = await recommendedProductRepo.getRecommendedProductList();
 
     if (response.statusCode == 200) {
-      print('Got Products');
+     // print('Got Products');
       _recommendedProductList = [];
       _recommendedProductList.addAll(Product.fromJson(response.body).products);
-      print(_recommendedProductList);
+      // _recommendedProductList.forEach((element) {
+      // // print('{id: ${element.id}, name: ${element.name}, description: ${element.description}, price: ${element.price}, stars:${element.stars}, img: ${element.img}, location: ${element.location}, createdAt: ${element.createdAt}, updatedAt: ${element.updatedAt}, typeId:${element.typeId},  }');
+      // var namess = {'${element.name}'};
+      // print(namess);
+      // });
       _isLoaded=true;
       update();
     } else {

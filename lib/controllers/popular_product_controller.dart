@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/controllers/cart_controller.dart';
 import 'package:food_delivery_app/data/repository/popular_product_repo.dart';
 import 'package:food_delivery_app/utils/colors.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,11 @@ class PopularProductController extends GetxController {
   int _quantity = 0;
 
   int get quantity => _quantity;
+
+  int _inCartItems = 0;
+
+  int get inCartItems => _inCartItems + _quantity;
+  late CartController _cart;
 
   Future<void> getPopularProductList() async {
     Response response = await popularProductRepo.getPopularProductList();
@@ -47,12 +53,13 @@ class PopularProductController extends GetxController {
 
   int checkQuantity(int quantity) {
     if (quantity < 0) {
-      Get.snackbar(
-        'Item Count',
-        'You Cannot Reduce more',
-        backgroundColor: AppColors.mainColor,
-        colorText: Colors.white,
-      );
+      Get.snackbar('Item Count', 'You Cannot Reduce more',
+          backgroundColor: AppColors.mainColor,
+          colorText: Colors.white,
+          titleText: Text(
+            'Warning ',
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          ));
       return 0;
     } else if (quantity > 20) {
       Get.snackbar(
@@ -64,6 +71,38 @@ class PopularProductController extends GetxController {
       return 20;
     } else {
       return quantity;
+    }
+  }
+
+  void initProduct(CartController cart) {
+    _quantity = 0;
+    _inCartItems = 0;
+    _cart = cart;
+  }
+
+  void addItem(ProductModel product) {
+    String qun = '';
+    if (_quantity > 0) {
+      _cart.addItem(product, _quantity);
+      _quantity = 0;
+      _cart.items.forEach((key, value) {
+        qun = value.quantity.toString();
+        print(
+            'The Product Id is>> ${value.id.toString()} and the quantity of the product is== ${value.quantity.toString()}');
+      });
+
+      Get.snackbar('Added Item ${qun.toString()} ', 'Successful ',
+          backgroundColor: AppColors.mainColor,
+          colorText: Colors.white,
+          margin: EdgeInsets.all(15),
+          padding: EdgeInsets.all(15));
+    } else {
+      Get.snackbar(
+        'Add item to cart ${_quantity.toString()}',
+        'Minimum Order ',
+        backgroundColor: AppColors.mainColor,
+        colorText: Colors.white,
+      );
     }
   }
 }
