@@ -57,7 +57,7 @@ class CartController extends GetxController {
     var quantity = 0;
     if (_items.containsKey(product.id)) {
       _items.forEach((key, value) {
-        quantity = value.id!;
+        quantity = value.quantity!;
       });
     }
     return quantity;
